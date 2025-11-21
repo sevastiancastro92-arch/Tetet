@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Definición de variables de ELEMENTOS DOM 
+    // Definición de variables de ELEMENTOS DOM (se mantiene igual)
     const countryModal = document.getElementById('country-modal');
     const paymentModal = document.getElementById('payment-modal');
     const methodsModal = document.getElementById('methods-modal'); 
@@ -14,34 +14,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const usdAmountInput = document.getElementById('usd-amount');
     const paymentError = document.getElementById('payment-validation-error');
     
-    // ** NUEVOS ELEMENTOS DEL MODAL DE SUBIDA **
-    const uploadModal = document.getElementById('upload-modal'); 
-    const proofFile = document.getElementById('proof-file');
-    const fileNameDisplay = document.getElementById('file-name-display');
-    const optionalText = document.getElementById('optional-text');
-    const sendProofButton = document.getElementById('send-proof-button');
-    const uploadStatus = document.getElementById('upload-status');
-    // ** FIN NUEVOS ELEMENTOS **
-    
-    // Variables de estado 
+    // Variables de estado (se mantiene igual)
     let isFirstPayment = JSON.parse(localStorage.getItem('isFirstPayment')) !== false; 
     const MIN_FIRST_PAYMENT = 5;
     const MIN_SUBSEQUENT_PAYMENT = 3;
     let selectedCountryRate = null;
     let fullTextToCopy = ''; 
     let currentRechargeData = {}; 
-    let activeOrderIdForUpload = null; // ID de la orden activa para el comprobante
     
-    // Historial (Simulación de DB con LocalStorage)
+    // Historial (Simulación de DB con LocalStorage) (se mantiene igual)
     let RECHARGE_HISTORY = JSON.parse(localStorage.getItem('rechargeHistory')) || []; 
 
-    // ** API KEY DE IMGBB **
-    // ESTA CLAVE ES PÚBLICA, PERO DEBE SER TRATADA CON PRECAUCIÓN EN UN ENTORNO REAL.
-    const IMGBB_API_KEY = '4612c081c225353e03fb5d5f93d83971'; 
-    // ***********************
-
-
-    // --- DATOS DE CONVERSIÓN Y CLASES DE BANDERA (ORIGINAL) ---
+    // --- DATOS DE CONVERSIÓN Y CLASES DE BANDERA (se mantiene igual) ---
     const exchangeRates = [
         { name: "Argentina", code: "ARS", rate: 52000, flagClass: "argentina" },
         { name: "Bolivia", code: "BOB", rate: 16, flagClass: "bolivia" }, 
@@ -61,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { name: "Venezuela", code: "VES", rate: 279, flagClass: "venezuela" }
     ];
 
-    // --- PLANTILLAS DE PAGO (ORIGINAL) ---
+    // --- PLANTILLAS DE PAGO (se mantiene igual) ---
     const paymentTemplates = { 
         "Argentina": `💰 *DATOS DE PAGO*
 🌍 *País:* Argentina
@@ -322,7 +306,7 @@ https://i.postimg.cc/YCg1rRGF/qrbolivia.jpg
 ✅ *Una vez realizado el pago, será procesado automáticamente.*`
     };
 
-    // --- FUNCIONES DE UTILIDAD ---
+    // --- FUNCIONES DE UTILIDAD (se mantiene igual) ---
     function toggleModal(modal, show) {
         modal.style.display = show ? 'flex' : 'none';
         document.body.style.overflow = show ? 'hidden' : 'auto';
@@ -346,12 +330,11 @@ https://i.postimg.cc/YCg1rRGF/qrbolivia.jpg
         const usdInputDisplay = document.getElementById('usd-input-display');
         const paymentConvertedAmount = document.getElementById('payment-converted-amount');
         
-        // El elemento usd-input-display no existe en el index.html actual, pero mantenemos la lógica de cálculo
-        if(usdInputDisplay) usdInputDisplay.textContent = `${usdAmount.toFixed(2)} USD`;
+        usdInputDisplay.textContent = `${usdAmount.toFixed(2)} USD`;
         
         const displayAmount = convertedAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, "."); 
         
-        if(paymentConvertedAmount) paymentConvertedAmount.textContent = displayAmount;
+        paymentConvertedAmount.textContent = displayAmount;
         return { 
             displayAmount: displayAmount, 
             usdAmount: usdAmount.toFixed(2),
@@ -375,7 +358,7 @@ https://i.postimg.cc/YCg1rRGF/qrbolivia.jpg
         // 1. Reemplazar el monto en la plantilla maestra y GUARDARLA EN fullTextToCopy
         fullTextToCopy = template.replace(/\(precios segun el balance\)/g, convertedAmountText);
         
-        // 2. Proceso de Parsing para generar el HTML (muestra solo los métodos)
+        // 2. Proceso de Parsing para generar el HTML (muestra solo los métodos) (se mantiene igual)
         let masterContent = fullTextToCopy; 
         const sections = masterContent.split('---');
         let notesSection = sections[sections.length - 1];
@@ -442,7 +425,7 @@ https://i.postimg.cc/YCg1rRGF/qrbolivia.jpg
     }
 
 
-    // --- MANEJO DEL HISTORIAL ---
+    // --- MANEJO DEL HISTORIAL (se mantiene igual) ---
 
     function saveRecharge() {
         if (!currentRechargeData.usdAmount) return;
@@ -463,9 +446,7 @@ https://i.postimg.cc/YCg1rRGF/qrbolivia.jpg
             localCurrency: selectedCountryRate.code,
             fullOrderText: fullTextToCopy, 
             status: 'Pendiente',
-            flagClass: countryData ? countryData.flagClass : '',
-            proofUrl: null, // NUEVO: URL del comprobante
-            optionalNote: null // NUEVO: Nota opcional
+            flagClass: countryData ? countryData.flagClass : '' 
         };
 
         RECHARGE_HISTORY.unshift(newRecharge); 
@@ -498,15 +479,13 @@ https://i.postimg.cc/YCg1rRGF/qrbolivia.jpg
                     <div class="card-details">
                         <p><strong>Monto USD:</strong> $${recharge.usdAmount}</p>
                         <p><strong>Monto Local:</strong> ${recharge.localAmount} ${recharge.localCurrency}</p>
-                        ${recharge.proofUrl ? `<p><strong>Comprobante:</strong> <a href="${recharge.proofUrl}" target="_blank">Ver Imagen</a></p>` : ''}
-                        ${recharge.optionalNote ? `<p><strong>Nota:</strong> ${recharge.optionalNote}</p>` : ''}
                         <p style="font-size: 0.8em; color: #7F8C8D;">Creado: ${recharge.date}</p>
                     </div>
                     <div class="card-actions">
                         <button class="history-button btn-copy" data-order-id="${recharge.id}">
                             Copiar Orden
                         </button>
-                        <button class="history-button btn-upload" data-order-id="${recharge.id}" ${recharge.status === 'Completed' ? 'disabled' : ''}>
+                        <button class="history-button btn-upload" data-order-id="${recharge.id}">
                             Subir Comprobante
                         </button>
                     </div>
@@ -516,147 +495,32 @@ https://i.postimg.cc/YCg1rRGF/qrbolivia.jpg
 
         rechargeHistoryList.innerHTML = historyHtml;
         setupHistoryActions(); 
-        setupUploadButtons(); // NUEVA: Llama a la acción de subida
     }
 
-    // Original: Maneja la copia del historial
     function setupHistoryActions() {
         document.querySelectorAll('.btn-copy').forEach(button => {
             button.addEventListener('click', function() {
                 const orderId = parseInt(this.getAttribute('data-order-id'));
                 const order = RECHARGE_HISTORY.find(r => r.id === orderId);
                 if (order) {
+                    // Esta función copia la orden completa del historial
+                    
+                    // Usamos la misma función de copiado para el historial para asegurar consistencia
                     copyToClipboard(order.fullOrderText, this, 'Copiar Orden', '¡Copiado!');
                 }
             });
         });
-    }
-    
-    // ** NUEVA FUNCIÓN: Configura los botones de subida **
-    function setupUploadButtons() {
+
         document.querySelectorAll('.btn-upload').forEach(button => {
-            button.onclick = function() {
-                activeOrderIdForUpload = parseInt(this.dataset.orderId);
-                
-                // Limpiar modal antes de abrir
-                proofFile.value = '';
-                fileNameDisplay.textContent = 'Ningún archivo seleccionado.';
-                optionalText.value = '';
-                uploadStatus.textContent = '';
-                uploadStatus.style.color = '#FFFFFF';
-                sendProofButton.disabled = false;
-                sendProofButton.textContent = 'Enviar Comprobante';
-
-                toggleModal(uploadModal, true);
-            };
-        });
-    }
-
-    // --- LÓGICA DE SUBIDA DE COMPROBANTE IMGBB ---
-    
-    proofFile.addEventListener('change', function() {
-        if (this.files && this.files.length > 0) {
-            fileNameDisplay.textContent = this.files[0].name;
-            uploadStatus.textContent = ''; 
-        } else {
-            fileNameDisplay.textContent = 'Ningún archivo seleccionado.';
-        }
-    });
-
-    sendProofButton.addEventListener('click', async function() {
-        if (!activeOrderIdForUpload) {
-            uploadStatus.style.color = '#E74C3C';
-            uploadStatus.textContent = 'Error: No se encontró ID de orden activa.';
-            return;
-        }
-
-        if (!proofFile.files || proofFile.files.length === 0) {
-            uploadStatus.style.color = '#E74C3C';
-            uploadStatus.textContent = '🚨 Debes seleccionar un archivo de imagen.';
-            return;
-        }
-
-        const file = proofFile.files[0];
-        
-        // Bloquear el botón y mostrar estado
-        sendProofButton.disabled = true;
-        sendProofButton.textContent = 'Subiendo... Por favor, espera.';
-        uploadStatus.style.color = '#A9A9A9';
-        uploadStatus.textContent = 'Conectando con imgBB...';
-
-        try {
-            // Convertir el archivo a Base64
-            const base64Image = await convertFileToBase64(file);
-            if (!base64Image) throw new Error('Error al convertir imagen a Base64.');
-            
-            const formData = new FormData();
-            // La base64 va después de "base64,"
-            formData.append('image', base64Image.split(',')[1]); 
-            formData.append('name', activeOrderIdForUpload + '-' + file.name);
-
-            const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-                method: 'POST',
-                body: formData
+            button.addEventListener('click', function() {
+                const orderId = this.getAttribute('data-order-id');
+                // Simulación de acción
+                alert(`Simulación: Abrir función para Subir Comprobante para el Pedido #${orderId}.`);
             });
-
-            const result = await response.json();
-
-            if (result.success) {
-                const imageUrl = result.data.url;
-                const note = optionalText.value.trim() || null;
-
-                // Actualizar el historial con la URL y la nota
-                const index = RECHARGE_HISTORY.findIndex(r => r.id === activeOrderIdForUpload);
-                if (index !== -1) {
-                    RECHARGE_HISTORY[index].proofUrl = imageUrl;
-                    RECHARGE_HISTORY[index].optionalNote = note;
-                    
-                    localStorage.setItem('rechargeHistory', JSON.stringify(RECHARGE_HISTORY));
-                    renderHistory();
-                    
-                    uploadStatus.style.color = '#2ECC71';
-                    uploadStatus.textContent = '✅ ¡Comprobante Subido con Éxito!';
-                    sendProofButton.textContent = '¡Comprobante Enviado!';
-                    sendProofButton.disabled = true;
-                    
-                    setTimeout(() => toggleModal(uploadModal, false), 3000);
-                } else {
-                    throw new Error("Orden no encontrada en el historial.");
-                }
-
-            } else {
-                uploadStatus.style.color = '#E74C3C';
-                uploadStatus.textContent = `❌ Error al subir a imgBB: ${result.error.message || 'Error desconocido'}`;
-                sendProofButton.disabled = false;
-                sendProofButton.textContent = 'Reintentar Envío';
-            }
-
-        } catch (error) {
-            console.error('Error durante la subida:', error);
-            uploadStatus.style.color = '#E74C3C';
-            uploadStatus.textContent = '❌ Error de red o interno. Reintentar.';
-            sendProofButton.disabled = false;
-            sendProofButton.textContent = 'Reintentar Envío';
-        }
-    });
-
-    // Función auxiliar para convertir File a Base64
-    function convertFileToBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            if (!file.type.startsWith('image/')) {
-                reject(new Error("El archivo seleccionado no es una imagen."));
-                return;
-            }
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
         });
     }
-    // --- FIN LÓGICA DE SUBIDA ---
-
-
-    // --- FUNCIÓN DE COPIADO MEJORADA CON FALLBACK (ORIGINAL) ---
+    
+    // --- FUNCIÓN DE COPIADO MEJORADA CON FALLBACK ---
     /**
      * Intenta copiar el texto usando la API moderna, y si falla, usa execCommand (fallback).
      */
@@ -718,7 +582,7 @@ https://i.postimg.cc/YCg1rRGF/qrbolivia.jpg
     // --- FIN FUNCIÓN DE COPIADO MEJORADA CON FALLBACK ---
 
 
-    // --- MANEJO DE EVENTOS ---
+    // --- MANEJO DE EVENTOS (se mantiene igual, excepto por la llamada a la nueva función) ---
     
     // Setup de Cierre/Apertura de Modales
     document.querySelectorAll('.close-button').forEach(btn => {
@@ -751,7 +615,7 @@ https://i.postimg.cc/YCg1rRGF/qrbolivia.jpg
                 usdAmountInput.value = minAmount.toFixed(2); 
 
                 document.getElementById('payment-country-title').textContent = `Realizar Pago a ${countryName}`;
-                // document.getElementById('payment-currency-code').textContent = selectedCountryRate.code; // Este elemento no existe
+                document.getElementById('payment-currency-code').textContent = selectedCountryRate.code;
                 document.querySelector('.payment-rule-hint').textContent = isFirstPayment 
                     ? `Recuerda: $${MIN_FIRST_PAYMENT} USD mínimo para tu primer pago.`
                     : `Mínimo de pago: $${MIN_SUBSEQUENT_PAYMENT} USD.`;
@@ -794,7 +658,7 @@ https://i.postimg.cc/YCg1rRGF/qrbolivia.jpg
         localStorage.setItem('isFirstPayment', false);
     });
     
-    // ** BOTÓN DE COPIADO GLOBAL **
+    // ** CORRECCIÓN DEL BOTÓN DE COPIADO GLOBAL **
     copyAllButton.addEventListener('click', function() {
         if (!fullTextToCopy) {
              this.textContent = '¡Error! No hay orden para copiar.';
@@ -805,7 +669,7 @@ https://i.postimg.cc/YCg1rRGF/qrbolivia.jpg
         // Llamamos a la función de copiado universal
         copyToClipboard(fullTextToCopy, this, 'Copiar TODOS los Métodos de Pago', '¡Todo Copiado! Listo para compartir.');
     });
-    // ** FIN BOTÓN DE COPIADO GLOBAL **
+    // ** FIN CORRECCIÓN DEL BOTÓN DE COPIADO GLOBAL **
 
     // Inicializar el historial al cargar la página
     renderHistory();
