@@ -45,94 +45,113 @@
     <div id="country-modal" class="modal">
         <div class="modal-content">
             <span class="close-button" id="close-country-modal">&times;</span>
-            <h2>Selecciona tu País</h2>
+            <h2>🌍 Selecciona un País para Pagar</h2>
             
-            <div class="country-grid">
-                <div class="country-card">
+            <div class="country-carousel">
+                
+                <button class="country-card">
                     <div class="flag-placeholder argentina"></div>
                     <span class="country-name">Argentina</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 52000 ARS</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder bolivia"></div>
                     <span class="country-name">Bolivia</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 16 Bs</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder brasil"></div>
                     <span class="country-name">Brasil</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 5.2 BRL</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder chile"></div>
                     <span class="country-name">Chile</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 950 CLP</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder colombia"></div>
                     <span class="country-name">Colombia</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 4200 COP</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder republica-dominicana"></div>
                     <span class="country-name">Rep. Dominicana</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 68.00 DOP</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder ecuador"></div>
                     <span class="country-name">Ecuador</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 1 USD</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder estados-unidos"></div>
                     <span class="country-name">Estados Unidos</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 1 USD</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder guatemala"></div>
                     <span class="country-name">Guatemala</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 7.8 GTQ</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder honduras"></div>
                     <span class="country-name">Honduras</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 25.00 HNL</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder mexico"></div>
                     <span class="country-name">México</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 20.00 MXN</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder nicaragua"></div>
                     <span class="country-name">Nicaragua</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 36.5 NIO</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder panama"></div>
                     <span class="country-name">Panamá</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 1 USD</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder paraguay"></div>
                     <span class="country-name">Paraguay</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 7300 PYG</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder peru"></div>
                     <span class="country-name">Perú</span>
-                </div>
-                <div class="country-card">
+                    <span class="country-balance">1 USD a 3.8 PEN</span>
+                </button>
+                <button class="country-card">
                     <div class="flag-placeholder venezuela"></div>
                     <span class="country-name">Venezuela</span>
-                </div>
+                    <span class="country-balance">1 USD a 279 VES</span>
+                </button>
+
             </div>
+            
+            <p class="swipe-hint"> desliza para ver más países</p>
+
         </div>
     </div>
-    
+
     <div id="payment-modal" class="modal">
         <div class="modal-content">
             <span class="close-button" id="close-payment-modal">&times;</span>
-            <h2 id="payment-country-title">Realizar Pago</h2>
+            <h2 id="payment-country-title">Realizar Pago a [País]</h2>
             
-            <div class="payment-form">
-                <div class="display-conversion">
-                    <p>Monto en USD</p>
-                    <span id="usd-input-display">0.00 USD</span>
-                </div>
-                <div class="display-conversion">
-                    <p>Monto en moneda local</p>
+            <div class="payment-details">
+                <p class="conversion-display">
+                    Pagas en USD: <span id="usd-input-display">0.00 USD</span>
+                </p>
+                <p class="conversion-display final-amount">
+                    Total a Pagar en <span id="payment-currency-code">ARS</span>: 
                     <span id="payment-converted-amount">0.00</span>
-                    <span id="payment-currency-code">MXN</span>
-                </div>
-
-                <div class="form-group">
+                </p>
+                
+                <div class="input-group">
                     <label for="usd-amount">Monto en USD (Mínimo: $5 USD)</label>
                     <input type="number" id="usd-amount" min="5" step="0.01" placeholder="Ej: 5.00">
                     <p class="payment-rule-hint">Recuerda: $5 USD mínimo para tu primer pago.</p>
@@ -165,34 +184,9 @@
         </div>
     </div>
 
-    <div id="upload-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" id="close-upload-modal">&times;</span>
-            <h2 id="upload-modal-title">Subir Comprobante de Pago</h2>
-            <p style="font-size: 0.9em; color: #BDC3C7;">Adjunta el recibo o captura de pantalla de tu pago para que sea verificado.</p>
 
-            <div class="form-group upload-group">
-                <label for="proof-file" class="file-label">
-                    Seleccionar Archivo (JPG, PNG)
-                </label>
-                <input type="file" id="proof-file" accept="image/jpeg,image/png" style="display: none;">
-                <div id="file-name-display" class="file-name-display">Ningún archivo seleccionado.</div>
-            </div>
-
-            <div class="form-group">
-                <label for="optional-text">Nota Opcional (Referencia, etc.)</label>
-                <textarea id="optional-text" placeholder="Ej: Pago realizado desde cuenta X a las 10:30 AM."></textarea>
-            </div>
-
-            <p id="upload-status" class="error-message" style="margin-top: 10px;"></p>
-
-            <button class="cta-button primary full-width" id="send-proof-button">
-                Enviar Comprobante
-            </button>
-        </div>
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="particles-config.js"></script>
-    <script src="script.js"></script>
+    <script src="particles-config.js"></script> 
+    <script src="script.js"></script> 
 </body>
 </html>
