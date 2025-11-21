@@ -1,0 +1,92 @@
+/* Paleta de Colores: 
+   Fondo/Base: #2C3E50 (Gris Antracita)
+   Acento: #007BFF (Azul Eléctrico)
+   Texto: #FFFFFF (Blanco) 
+*/
+
+/* ... (resto del código CSS anterior) ... */
+
+/* --- Estilos para el Modal de Subida de Comprobante (#upload-modal) --- */
+#upload-modal .modal-content {
+    max-width: 450px; 
+    padding: 25px;
+    text-align: center;
+}
+
+.upload-details {
+    padding-top: 15px;
+}
+
+#upload-order-info {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #ECF0F1;
+    margin-bottom: 25px;
+}
+
+.input-group-upload {
+    margin-bottom: 20px;
+}
+
+.upload-label {
+    display: block;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: #FFFFFF;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    border: 2px dashed #0056b3;
+}
+
+.upload-label:hover {
+    background-color: #0056b3;
+    border-color: #003366;
+}
+
+#file-name-display {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Estilos para el campo de Descripción (textarea) */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left; /* Alinea etiquetas y textarea a la izquierda */
+}
+
+.input-group textarea {
+    width: 95%; 
+    padding: 10px;
+    border: 1px solid #34495E;
+    border-radius: 6px;
+    background-color: #1A2D40;
+    color: #FFFFFF;
+    font-size: 1em;
+    resize: vertical; /* Permite solo el redimensionamiento vertical */
+}
+
+.optional-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ECF0F1; /* Color para indicar que es opcional */
+    font-size: 0.9em;
+    font-weight: normal;
+}
+
+#send-proof-button:disabled {
+    background-color: #34495E; /* Gris oscuro para deshabilitado */
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+.error-message {
+    color: #E74C3C;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
