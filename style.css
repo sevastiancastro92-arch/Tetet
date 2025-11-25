@@ -1,0 +1,324 @@
+/* === TU DISEÑO ORIGINAL (sin tocar la lógica) === */
+:root{
+  /* Nuevos Colores de Neón más vibrantes */
+  --neon-cyan: #00BFFF; /* ANTES: #00f0ff. NUEVO: Azul Eléctrico */
+  --neon-pink: #FF00AA; /* ANTES: #ff4df0. NUEVO: Magenta Vibrante */
+  --neon-green: #00FF88; /* Mantenido, verde brillante */
+  --neon-yellow: #ffd460; /* Mantenido para precios */
+  --glass-bg: #141225; /* ANTES: Transparente. NUEVO: Fondo oscuro sólido */
+  /* COLORES PARA LA BARRA DE PROGRESO */
+  --level-base: #2a223e; /* Base oscura sólida */
+  --level-vip: #00BFFF; /* VIP: Azul Eléctrico */
+  --level-premium: #FF00AA; /* Premium: Magenta Vibrante */
+}
+html,body{height:100%;}
+
+body {
+  /* Fondo mantenido con el gradiente oscuro original */
+  background: linear-gradient(135deg, #0f0812 10%, #141225 50%, #1b1730 100%);
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+/* particles canvas sits behind everything */
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: block;
+}
+
+/* content sits above particles */
+.app-root {
+  position: relative;
+  z-index: 5;
+}
+
+/* CARD - ELIMINAMOS TRANSPARENCIA */
+.card {
+  /* Fondo oscuro sólido */
+  background: var(--glass-bg);
+  /* Eliminamos backdrop-filter: blur(8px); */
+  /* Borde más sutil que el vidrio */
+  border: 1px solid rgba(0,191,255,0.15);
+}
+
+/* NEON BUTTONS & FLOATING */
+@keyframes floaty {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+.neon-btn {
+  transition: transform .18s ease, box-shadow .18s ease;
+  animation: floaty 3.8s ease-in-out infinite;
+  /* Glow más fuerte y ajuste de sombra */
+  box-shadow: 0 8px 35px rgba(0,0,0,0.5), 0 0 24px rgba(0, 191, 255, 0.1);
+  border-radius: 12px;
+  /* Quitamos el borde y el blur */
+  border: none;
+}
+
+/* Botón de Mostrar (Azul Eléctrico) */
+.btn-show {
+  /* Fondo más opaco/sólido de neón */
+  background: linear-gradient(90deg, rgba(0,191,255,0.25), rgba(0,170,230,0.2));
+  color: var(--neon-cyan);
+  /* Sombra más fuerte y visible */
+  box-shadow: 0 8px 30px rgba(0,191,255,0.15), 0 0 24px rgba(0,191,255,0.25);
+}
+
+/* Botón de Comprar (mantenido verde) */
+.btn-buy {
+  background: linear-gradient(90deg, rgba(0,255,136,0.18), rgba(0,184,148,0.16));
+  color: var(--neon-green);
+  box-shadow: 0 8px 30px rgba(0,255,136,0.1), 0 0 20px rgba(0,255,136,0.15);
+}
+
+/* Botón de Logout (Magenta Vibrante) */
+.btn-logout {
+  /* Fondo más opaco/sólido de neón */
+  background: linear-gradient(90deg, rgba(255,0,170,0.25), rgba(200,0,135,0.2));
+  color: var(--neon-pink);
+  /* Sombra más fuerte y visible */
+  box-shadow: 0 8px 30px rgba(255,0,170,0.15), 0 0 20px rgba(255,0,170,0.25);
+}
+
+/* neon text glows - Aumentamos el brillo del texto */
+.text-neon-cyan { color: var(--neon-cyan); text-shadow: 0 0 14px rgba(0,191,255,0.4); }
+.text-neon-pink { color: var(--neon-pink); text-shadow: 0 0 14px rgba(255,0,170,0.35); }
+.text-neon-green { color: var(--neon-green); text-shadow: 0 0 14px rgba(0,255,136,0.25); }
+
+/* pestañas */
+.tabs { display:flex; gap:8px; margin-bottom:12px; z-index:6; }
+.tab-btn {
+  /* Fondo oscuro sólido */
+  background: #191630;
+  color: rgba(255,255,255,0.95);
+  padding: 8px 14px;
+  border-radius: 999px;
+  /* Borde sutil, no transparente */
+  border: 1px solid #141225;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform .12s ease, box-shadow .12s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+/* Pestaña activa (Azul Eléctrico) */
+.tab-btn.active {
+  /* Fondo más opaco de neón */
+  background: linear-gradient(90deg, rgba(0,191,255,0.15), rgba(0,170,230,0.08));
+  color: var(--neon-cyan);
+  box-shadow: 0 10px 45px rgba(0,191,255,0.1), 0 0 20px rgba(0,191,255,0.2);
+}
+
+/* recuadro key */
+.key-box {
+  background: #000000; /* Fondo negro sólido para contraste */
+  /* Borde más sólido de neón */
+  border: 1px solid rgba(0,255,136,0.2);
+  padding: 12px;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+.small-muted { color: rgba(255,255,255,0.75); font-size:0.9rem; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; }
+
+/* modal - ELIMINAMOS TRANSPARENCIA */
+.modal-backdrop {
+  position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+  /* Mantenemos el fondo de pantalla con más opacidad */
+  background: rgba(0,0,0,0.8); z-index: 1000;
+}
+.modal {
+  width: 92%;
+  max-width: 520px;
+  border-radius: 12px;
+  padding: 18px;
+  /* Fondo oscuro sólido */
+  background: #0A0814;
+  /* Eliminamos backdrop-filter: blur(8px); */
+  /* Borde de neón fuerte */
+  border: 1px solid var(--neon-cyan);
+  color: white;
+  /* Glow del modal (Azul Eléctrico más fuerte) */
+  box-shadow: 0 10px 60px rgba(0,0,0,0.7), 0 0 40px rgba(0,191,255,0.12);
+}
+.modal .actions { display:flex; gap:10px; justify-content:flex-end; margin-top:12px; }
+.price-badge { font-size: 1.5rem; font-weight:700; color: var(--neon-yellow); text-shadow:0 0 12px rgba(255,212,96,0.12); }
+
+/* === HAMBURGER + SIDEBAR (DERECHA) - ELIMINAMOS TRANSPARENCIA === */
+.hamburger {
+  position: fixed;
+  right: 18px; /* moved to right */
+  top: 18px;
+  z-index: 120;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  /* Fondo oscuro sólido */
+  background: #141225;
+  /* Eliminamos backdrop-filter: blur(6px); */
+  /* Borde sutil */
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+  transition: transform .18s ease, background .18s ease;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+}
+.hamburger:active { transform: scale(.98); }
+
+.burger {
+  width: 24px;
+  height: 16px;
+  position: relative;
+  transition: all .25s ease;
+}
+.burger span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: white;
+  display: block;
+  border-radius: 2px;
+  transition: transform .25s ease, opacity .18s ease;
+  box-shadow: 0 0 8px rgba(255,255,255,0.06);
+}
+.burger span:nth-child(1) { top: 0; }
+.burger span:nth-child(2) { top: 7px; }
+.burger span:nth-child(3) { top: 14px; }
+
+/* open / scroll => X (Azul/Magenta) */
+.hamburger.open .burger span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+  background: var(--neon-pink);
+  box-shadow: 0 0 18px rgba(255,0,170,0.4);
+}
+.hamburger.open .burger span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.open .burger span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+  background: var(--neon-cyan);
+  box-shadow: 0 0 18px rgba(0,191,255,0.4);
+}
+
+/* backdrop */
+.menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: none;
+  background: rgba(0,0,0,0.8);
+  transition: opacity .22s ease;
+}
+
+/* side menu slides from RIGHT - ELIMINAMOS TRANSPARENCIA */
+.side-menu {
+  position: fixed;
+  top: 0;
+  right: -100%; /* hidden off-screen to right */
+  height: 100vh;
+  width: 60vw;
+  max-width: 520px;
+  z-index: 115;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: right .28s cubic-bezier(.2,.9,.2,1);
+  border-radius: 12px 0 0 12px;
+  /* Fondo oscuro sólido */
+  background: #100C1C;
+  /* Eliminamos backdrop-filter: blur(14px); */
+  /* Borde lateral neon */
+  border-left: 1px solid var(--neon-pink);
+  box-shadow: 0 10px 60px rgba(0,0,0,0.7);
+}
+.side-menu.open { right: 0; }
+
+.menu-user {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.menu-user .avatar {
+  width: 56px; height: 56px; border-radius: 12px;
+  /* Avatar gradiente (Azul Eléctrico / Magenta Vibrante) */
+  background: linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+  display:flex; align-items:center; justify-content:center; font-weight:700; color:#071122;
+  /* Avatar sombra más fuerte */
+  box-shadow: 0 0 20px rgba(0,191,255,0.2), 0 0 30px rgba(255,0,170,0.2);
+  font-size:18px;
+}
+.menu-item {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px; border-radius:12px; cursor:pointer;
+  /* Fondo oscuro sólido */
+  background: #141225;
+  border:1px solid rgba(255,255,255,0.1);
+  transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.4);
+}
+/* Efecto hover con glow más visible */
+.menu-item:hover {
+  transform: translateX(-6px);
+  background: linear-gradient(90deg, rgba(0,191,255,0.05), rgba(255,0,170,0.04));
+  box-shadow: 0 10px 45px rgba(0,191,255,0.08), 0 0 18px rgba(255,0,170,0.06);
+}
+
+/* responsive */
+@media (max-width: 520px) {
+  .side-menu { width: 80vw; max-width: none; }
+}
+
+/* === HIDING main screen controls (we keep markup but hide them visually on main) === */
+/* NOTE: Removed .hide-on-main .tabs from here so the tabs remain visible on main screen. */
+.hide-on-main .user-block,
+.hide-on-main .header-right {
+  display: none !important;
+}
+
+/* small neon touches for cards */
+.card.rounded-xl { border-radius: 14px; box-shadow: 0 8px 40px rgba(0,0,0,0.6); }
+.card .text-2xl { text-shadow: 0 0 12px rgba(0,0,0,0.2); }
+
+/* Make buy CTA look neon inside the card */
+.btn-buy .py-2 { color: #041020; }
+
+/* === NUEVOS ESTILOS PARA BARRA DE GASTOS Y NIVEL === */
+.progress-bar {
+  height: 8px;
+  border-radius: 999px;
+  background-color: var(--level-base);
+  overflow: hidden;
+  margin-top: 4px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3) inset;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  transition: width 0.4s ease-out, background 0.4s ease;
+  background-color: var(--level-base); /* Base, se actualiza por JS */
+}
+.level-label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-shadow: 0 0 8px rgba(0,0,0,0.4);
+}
+/* Estilos para nivel VIP (Azul Eléctrico más fuerte) */
+.level-vip-text { color: var(--level-vip); text-shadow: 0 0 14px rgba(0,191,255,0.4); }
+/* Estilos para nivel Premium (Magenta Vibrante más fuerte) */
+.level-premium-text { color: var(--level-premium); text-shadow: 0 0 14px rgba(255,0,170,0.4); }
+
+/* Estilo para la barra de progreso en la pantalla principal (opcional: añadir margen inferior para separarla de los productos) */
+#mainLevelBar {
+  margin-bottom: 24px;
+                              }
