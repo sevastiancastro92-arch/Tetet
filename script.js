@@ -10,8 +10,8 @@ const colors = [
 'rgba(255,212,96,0.95)'
 ];
 const particles = [];
-const PARTICLE_COUNT = Math.floor((w*h) / 80000) + 30; // scaled by screen
-function rand(min,max){return Math.random()*(max-min)+min;}
+const PARTICLE_COUNT = Math.floor((wh) / 80000) + 30; // scaled by screen
+function rand(min,max){return Math.random()(max-min)+min;}
 function makeParticle(){
 return {
 x: rand(0,w),
@@ -60,8 +60,8 @@ for(let p of particles){
   ctx.beginPath();  
   const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.glow);  
   grd.addColorStop(0, p.hue);  
-  grd.addColorStop(0.15, p.hue.replace('0.95)', '0.35)')); // Corregido: Reemplaza 0.95 por 1 si el color es 'rgba(..., 0.95)' para que la sustitución funcione  
-  grd.addColorStop(0.6, p.hue.replace('0.95)', '0.08)'));  
+  grd.addColorStop(0.15, p.hue.replace('1)', '0.35)'));  
+  grd.addColorStop(0.6, p.hue.replace('1)', '0.08)'));  
   grd.addColorStop(1, 'rgba(0,0,0,0)');  
   ctx.fillStyle = grd;  
   ctx.arc(p.x, p.y, p.r*3 + (p.glow/6), 0, Math.PI*2);  
@@ -129,8 +129,6 @@ const menuKeys = document.getElementById("menuKeys");
 const menuLogout = document.getElementById("menuLogout");
 // NUEVO ELEMENTO DE MENÚ
 const menuRecharge = document.getElementById("menuRecharge");
-// NUEVO ELEMENTO DE MENÚ TELEGRAM (DEBE ESTAR DEFINIDO)
-const menuTelegramBot = document.getElementById("menuTelegramBot"); 
 
 // existing modals
 const confirmModal = document.getElementById("confirmModal");
@@ -182,11 +180,6 @@ myKeysContainer.classList.remove("hidden");
 tabPublicaciones.classList.remove("active");
 tabKeys.classList.add("active");
 }
-}
-
-// --- sanitize email (unchanged) ---
-function sanitizeEmail(email) {
-return email.replace(/\./g, "_"); // Utiliza un modificador global para reemplazar todos los puntos
 }
 
 // --- Session (unchanged) ---
@@ -250,41 +243,6 @@ sessionStorage.removeItem("sociosxit_user");
 window.location.href = "index.html";
 });
 
-
-/* =====================================================
-// --- LÓGICA DE VINCULACIÓN DE TELEGRAM (REUBICADO AQUÍ) ---
-// La lógica se mueve aquí, después de que 'currentUser', 'db', y 'sanitizeEmail' están definidas.
-// ===================================================== */
-if (menuTelegramBot) {
-    menuTelegramBot.addEventListener("click", async () => {
-        if (!currentUser) {
-            alert("Debes iniciar sesión para vincular tu Telegram.");
-            return;
-        }
-
-        closeMenu(); // Cierra el menú lateral
-
-        const userId = sanitizeEmail(currentUser);
-
-        // Crear código único
-        const code = "TG-" + Math.floor(100000 + Math.random() * 900000);
-
-        // Guardarlo en Firebase
-        await db.ref(`users/${userId}/telegramLinkCode`).set(code);
-
-        // Cambia por el usuario de tu bot. USA TU NOMBRE DE BOT REAL AQUÍ.
-        const botUsername = "TU_BOT_AQUI";  
-
-        // Abrir Telegram con el /start <code>
-        const tgURL = `https://t.me/${botUsername}?start=${code}`;
-        window.open(tgURL, "_blank");
-    });
-}
-/* =====================================================
-// --- FIN LÓGICA DE VINCULACIÓN DE TELEGRAM ---
-// ===================================================== */
-
-
 // =================================================================
 // --- LÓGICA DE RECARGA DE SALDO (NUEVO) ---
 // =================================================================
@@ -317,11 +275,11 @@ rechargeError.classList.add("hidden");
 rechargeModal.style.display = "none";
 
 // Formatear mensaje para URL
-const message = `Hola quiero recargar ${amount.toFixed(2)} USD en la pagina de socios`;
+const message = Hola quiero recargar ${amount.toFixed(2)} USD en la pagina de socios;
 const encodedMessage = encodeURIComponent(message);
 
 // Crear URL de WhatsApp
-const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+const whatsappURL = https://wa.me/${whatsappNumber}?text=${encodedMessage};
 
 // Redirigir
 window.open(whatsappURL, '_blank');
@@ -356,7 +314,7 @@ if (pub.mediaUrl.includes("youtube.com") || pub.mediaUrl.includes("youtu.be")) {
 const videoId = pub.mediaUrl.split('v=')[1] || pub.mediaUrl.split('/').pop();
 mediaHTML =    <div class="aspect-w-16 aspect-h-9 mb-4">   <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen class="w-full h-full rounded-lg"></iframe>   </div>;
 } else {
-mediaHTML = `<img src="${pub.mediaUrl}" alt="${pub.title}" class="w-full h-48 object-cover rounded-lg mb-4">`;
+mediaHTML = <img src="${pub.mediaUrl}" alt="${pub.title}" class="w-full h-48 object-cover rounded-lg mb-4">;
 }
 }
 
@@ -368,7 +326,7 @@ const btn = pub.buttons[btnKey];
 // price as decimal with two places
 const priceNum = parseFloat(btn.price || 0);
 const price = Number.isFinite(priceNum) ? priceNum.toFixed(2) : "0.00";
-const duration = btn.duration || (btn.days ? `${btn.days} días` : "");
+const duration = btn.duration || (btn.days ? ${btn.days} días : "");
 const keysCount = countKeys(btn.keys);
 
 // safe id for DOM  
@@ -398,7 +356,7 @@ return div;
 }
 
 function toggleDetails(key) {
-const el = document.getElementById(`details-${key}`);
+const el = document.getElementById(details-${key});
 if (el) el.classList.toggle("hidden");
 }
 
@@ -441,7 +399,7 @@ return [];
 // write keys back preserving original type (string => string, array => array of objects)
 async function updateKeysField(pubId, btnKeyIdentifier, originalBtn, newKeysArr) {
 // fetch current publication to avoid clobbering concurrent edits
-const pubSnap = await db.ref(`publications/${pubId}`).once("value");
+const pubSnap = await db.ref(publications/${pubId}).once("value");
 const pub = pubSnap.val();
 if (!pub) return;
 
@@ -450,21 +408,21 @@ if (Array.isArray(pub.buttons)) {
 const idx = Number(btnKeyIdentifier);
 if (!Number.isFinite(idx)) return;
 if (typeof originalBtn.keys === "string") {
-const s = newKeysArr.map(k => `key: ${k.key}`).join(", ");
-await db.ref(`publications/${pubId}/buttons/${idx}/keys`).set(s);
+const s = newKeysArr.map(k => key: ${k.key}).join(", ");
+await db.ref(publications/${pubId}/buttons/${idx}/keys).set(s);
 } else {
 const arr = newKeysArr.map(k => ({ key: k.key, usada: !!k.usada }));
-await db.ref(`publications/${pubId}/buttons/${idx}/keys`).set(arr);
+await db.ref(publications/${pubId}/buttons/${idx}/keys).set(arr);
 }
 } else {
 const prop = btnKeyIdentifier;
 if (!pub.buttons || !pub.buttons[prop]) return;
 if (typeof originalBtn.keys === "string") {
-const s = newKeysArr.map(k => `key: ${k.key}`).join(", ");
-await db.ref(`publications/${pubId}/buttons/${prop}/keys`).set(s);
+const s = newKeysArr.map(k => key: ${k.key}).join(", ");
+await db.ref(publications/${pubId}/buttons/${prop}/keys).set(s);
 } else {
 const arr = newKeysArr.map(k => ({ key: k.key, usada: !!k.usada }));
-await db.ref(`publications/${pubId}/buttons/${prop}/keys`).set(arr);
+await db.ref(publications/${pubId}/buttons/${prop}/keys).set(arr);
 }
 }
 }
@@ -496,7 +454,7 @@ return {
 level: "VIP",
 discount: 0.10, // 10%
 nextGoal: LEVEL_PREMIUM_SPEND,
-goalLabel: `Próx. nivel (Premium): $${LEVEL_PREMIUM_SPEND.toFixed(2)} (20% Desc.)`,
+goalLabel: Próx. nivel (Premium): $${LEVEL_PREMIUM_SPEND.toFixed(2)} (20% Desc.),
 progressColor: "var(--level-vip)"
 };
 } else {
@@ -504,7 +462,7 @@ return {
 level: "Base",
 discount: 0.00, // 0%
 nextGoal: LEVEL_VIP_SPEND,
-goalLabel: `Próx. nivel (VIP): $${LEVEL_VIP_SPEND.toFixed(2)} (10% Desc.)`,
+goalLabel: Próx. nivel (VIP): $${LEVEL_VIP_SPEND.toFixed(2)} (10% Desc.),
 progressColor: "var(--level-base)"
 };
 }
@@ -575,7 +533,7 @@ Loads the user's total accumulated spending in real-time.
 */
 function loadUserSpendingAndLevel(email) {
 const userKey = sanitizeEmail(email);
-const purchasesRef = db.ref(`users/${userKey}/purchases`);
+const purchasesRef = db.ref(users/${userKey}/purchases);
 
 purchasesRef.on("value", snap => {
 const purchases = snap.val();
@@ -646,7 +604,7 @@ async function comprarKey(pubId, safeBtnId, originalPrice, rawBtnId, finalPrice)
 try {
 const email = currentUser;
 const userKey = sanitizeEmail(email);
-const userRef = db.ref(`users/${userKey}`);
+const userRef = db.ref(users/${userKey});
 
 // get balance (support string or number)  
 const balSnap = await userRef.child("balance").once("value");  
@@ -759,23 +717,27 @@ alert("Ocurrió un error al procesar la compra.");
 }
 }
 
+// --- sanitize email (unchanged) ---
+function sanitizeEmail(email) {
+return email.replace(/./g, "_");
+}
 
 // --- load user balance (real-time) (unchanged, but also updates menu) ---
 function loadUserBalance(email) {
 const userKey = sanitizeEmail(email);
-db.ref(`users/${userKey}/balance`).on("value", snap => {
+db.ref(users/${userKey}/balance).on("value", snap => {
 const balance = parseFloat(snap.val() || 0) || 0;
-const formatted = `$${Number(balance).toFixed(2)}`;
+const formatted = $${Number(balance).toFixed(2)};
 userBalanceEl.textContent = formatted;
 // also update menu display
-menuUserBalance.textContent = `Saldo: ${formatted}`;
+menuUserBalance.textContent = Saldo: ${formatted};
 });
 }
 
 // --- Historial (Mis Keys) with search & filter (MODIFIED to show original/final price) ---
 function loadUserPurchases(email) {
 const userKey = sanitizeEmail(email);
-const purchasesRef = db.ref(`users/${userKey}/purchases`);
+const purchasesRef = db.ref(users/${userKey}/purchases);
 const searchInput = document.getElementById("searchKeyInput");
 const filterSelect = document.getElementById("filterDateSelect");
 let allPurchases = [];
