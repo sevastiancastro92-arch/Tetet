@@ -130,7 +130,7 @@ const menuLogout = document.getElementById("menuLogout");
 // NUEVO ELEMENTO DE MENÚ
 const menuRecharge = document.getElementById("menuRecharge");
 // NUEVO ELEMENTO DE MENÚ TELEGRAM (DEBE ESTAR DEFINIDO)
-const menuTelegramBot = document.getElementById("menuTelegramBot"); // Se asume que este elemento existe en tu HTML
+const menuTelegramBot = document.getElementById("menuTelegramBot"); 
 
 // existing modals
 const confirmModal = document.getElementById("confirmModal");
@@ -182,6 +182,11 @@ myKeysContainer.classList.remove("hidden");
 tabPublicaciones.classList.remove("active");
 tabKeys.classList.add("active");
 }
+}
+
+// --- sanitize email (unchanged) ---
+function sanitizeEmail(email) {
+return email.replace(/\./g, "_"); // Utiliza un modificador global para reemplazar todos los puntos
 }
 
 // --- Session (unchanged) ---
@@ -247,7 +252,8 @@ window.location.href = "index.html";
 
 
 /* =====================================================
-// --- LÓGICA DE VINCULACIÓN DE TELEGRAM (INTEGRADO AQUÍ) ---
+// --- LÓGICA DE VINCULACIÓN DE TELEGRAM (REUBICADO AQUÍ) ---
+// La lógica se mueve aquí, después de que 'currentUser', 'db', y 'sanitizeEmail' están definidas.
 // ===================================================== */
 if (menuTelegramBot) {
     menuTelegramBot.addEventListener("click", async () => {
@@ -256,7 +262,7 @@ if (menuTelegramBot) {
             return;
         }
 
-        closeMenu(); // Cierra el menú lateral antes de abrir Telegram
+        closeMenu(); // Cierra el menú lateral
 
         const userId = sanitizeEmail(currentUser);
 
@@ -266,8 +272,8 @@ if (menuTelegramBot) {
         // Guardarlo en Firebase
         await db.ref(`users/${userId}/telegramLinkCode`).set(code);
 
-        // Cambia por el usuario de tu bot
-        const botUsername = "Socios66.bot";  
+        // Cambia por el usuario de tu bot. USA TU NOMBRE DE BOT REAL AQUÍ.
+        const botUsername = "TU_BOT_AQUI";  
 
         // Abrir Telegram con el /start <code>
         const tgURL = `https://t.me/${botUsername}?start=${code}`;
@@ -753,10 +759,6 @@ alert("Ocurrió un error al procesar la compra.");
 }
 }
 
-// --- sanitize email (unchanged) ---
-function sanitizeEmail(email) {
-return email.replace(/\./g, "_"); // Utiliza un modificador global para reemplazar todos los puntos
-}
 
 // --- load user balance (real-time) (unchanged, but also updates menu) ---
 function loadUserBalance(email) {
