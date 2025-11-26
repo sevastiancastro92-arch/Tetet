@@ -267,7 +267,7 @@ if (menuTelegramBot) {
         await db.ref(`users/${userId}/telegramLinkCode`).set(code);
 
         // Cambia por el usuario de tu bot
-        const botUsername = "TU_BOT_AQUI";  
+        const botUsername = "Socios66.bot";  
 
         // Abrir Telegram con el /start <code>
         const tgURL = `https://t.me/${botUsername}?start=${code}`;
